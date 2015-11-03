@@ -5,9 +5,13 @@
 
 
   <link rel='stylesheet' type ='text/css' href = "styles.css">
+  <link rel="stylesheet" href="jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
+
 </head>
 <body>
 <div id = 'wrapper'>
+
+
 
   <div id = "tabs" ng-controller = "tabCtrl as tabCtrl" >
     <div>
@@ -44,6 +48,35 @@
 <script src = "js/app.js"></script>
 <script src = "js/tabController.js"></script>
 <script src = "js/canvas.js"></script>
+<script src="jquery-jvectormap-2.0.3.min.js"></script>
+<script src="jquery-jvectormap-europe-mill.js"></script>
+
+
+<div id="europe" style="width: 600px; height: 400px">
+<script>
+$(function(){
+  $('#europe').vectorMap({
+    map: 'europe_mill',
+    scaleColors: ['#C8EEFF', '#0071A4'],
+    normalizeFunction: 'polynomial',
+    hoverOpacity: 0.7,
+    hoverColor: false,
+    markerStyle: {
+      initial: {
+        fill: '#F8E23B',
+        stroke: '#383f47'
+      }
+    },
+    backgroundColor: '#383f47',
+    markers: [
+      {latLng: [39.90, 12.45], name: 'Vatican City'},
+      {latLng: [43.73, 7.41], name: 'Monaco'}
+    ]
+  });
+});
+</script>
+</div>
+
 
 </body>
 </html>

@@ -1,5 +1,4 @@
 var canvas = document.getElementById("map_canvas");
-console.log(canvas)
 var ctx = canvas.getContext("2d");
 
 ctx.beginPath();
