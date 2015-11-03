@@ -28,11 +28,17 @@
 
       <div>
         <div id = "map" ng-show = "tabCtrl.isSelected('map')">
+          <button id = "loc1">1</button>
+          <button id = "loc2">2</button>
+          <button id = "loc3">3</button>
+          <button id = "loc4">4</button>
+          <button id = "loc5">5</button>
 <!--           <div id="mapContainer" style="position:relative">
             <div id="europe" style="width: 600px; height: 400px"></div>
             <div id="svgMapOverlay" style="position:absolute;top:0px;left:0px"></div>
           </div> -->
             <canvas id="map_canvas" width="578" height="200"></canvas>
+
         </div>
         <div id = "players" ng-show = "tabCtrl.isSelected('players')">
           PLAYERS

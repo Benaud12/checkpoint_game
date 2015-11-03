@@ -32,4 +32,44 @@
   background-color: #94B8B8;
 }
 
+button {
+  height: 30px;
+  width: 30px;
+  border-radius : 100%;
+  background-color: white;
+}
+
+#map {
+  position:relative;
+}
+
+#loc1 {
+  position: absolute;
+  top: 21%;
+  left: 17%;
+}
+
+#loc2 {
+  position: absolute;
+  top: 70%;
+  left: 33%;
+}
+
+#loc3 {
+  position: absolute;
+  top: 27%;
+  left: 46%;
+}
+
+#loc4 {
+  position: absolute;
+  top: 68%;
+  left: 67%;
+}
+
+#loc5 {
+  position: absolute;
+  top: 39%;
+  left: 85%;
+}
 
