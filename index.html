@@ -28,12 +28,11 @@
 
       <div>
         <div id = "map" ng-show = "tabCtrl.isSelected('map')">
-          <div id="mapContainer" style="position:relative">
+<!--           <div id="mapContainer" style="position:relative">
             <div id="europe" style="width: 600px; height: 400px"></div>
             <div id="svgMapOverlay" style="position:absolute;top:0px;left:0px"></div>
-            <!--Uncomment this and canvas.js to put canvas on top-->
-<!--             <canvas id="map_canvas" style="position:absolute;top:0px;left:0px"></canvas> -->
-          </div>
+          </div> -->
+            <canvas id="map_canvas"></canvas>
         </div>
         <div id = "players" ng-show = "tabCtrl.isSelected('players')">
           PLAYERS
