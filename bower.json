@@ -1,0 +1,23 @@
+{
+  "name": "GAME",
+  "homepage": "https://github.com/Benaud12/checkpoint_game",
+  "authors": [
+    "Proskurina <yproskurina@yahoo.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "angular": "~1.4.7",
+    "angular-resource": "~1.4.7"
+  }
+}
