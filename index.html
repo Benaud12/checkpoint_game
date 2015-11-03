@@ -2,37 +2,48 @@
 <html ng-app = "GameApp">
 <head>
   <title>THE GAME</title>
-  <script src = "bower_components/jquery/dist/jquery.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src = "js/app.js"></script>
-  <script src = "js/controller.js"></script>
+
+
+  <link rel='stylesheet' type ='text/css' href = "styles.css">
 </head>
 <body>
-  <div ng-controller = "tabCtrl as tabCtrl">
+<div id = 'wrapper'>
+
+  <div id = "tabs" ng-controller = "tabCtrl as tabCtrl" >
     <div>
       <ul>
-        <li ng-class = "{}">
+        <li ng-class = "{active:tabCtrl.isSelected('map')}">
           <a href ng-click = "tabCtrl.selectTab('map')">Map</a>
         </li>
-        <li ng-class = "{}">
+        <li ng-class = "{active:tabCtrl.isSelected('players')}">
           <a href ng-click = "tabCtrl.selectTab('players')">Players</a>
         </li>
-        <li ng-class = "{}">
+        <li ng-class = "{active:tabCtrl.isSelected('rules')}">
           <a href ng-click = "tabCtrl.selectTab('rules')">Rules</a>
         </li>
-      <ul>
-    <div>
-    <div id = "map" ng-show = "tabCtrl.isSelected('map')">
-      <canvas>
-      </canvas>
-    </div>
-    <div id = "players" ng-show = "tabCtrl.isSelected('players')">
-      PLAYERS
-    </div>
-    <div id = "rules" ng-show = "tabCtrl.isSelected('rules')">
-      RULES
+      </ul>
+      <div>
+        <div id = "map" ng-show = "tabCtrl.isSelected('map')">
+          <canvas id="map_canvas">
+          </canvas>
+        </div>
+        <div id = "players" ng-show = "tabCtrl.isSelected('players')">
+          PLAYERS
+        </div>
+        <div id = "rules" ng-show = "tabCtrl.isSelected('rules')">
+          RULES
+        </div>
+      </div>
     </div>
   </div>
+</div>
+
+<script src = "bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src = "js/app.js"></script>
+<script src = "js/tabController.js"></script>
+<script src = "js/canvas.js"></script>
+
 </body>
 </html>

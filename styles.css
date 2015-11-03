@@ -1,0 +1,25 @@
+#wrapper {
+  width: 100%;
+}
+
+#tabs {
+  width: 60%;
+  margin: auto;
+  border: solid;
+  border-width: 3px;
+}
+
+#tabs li {
+  list-style: none;
+  display: inline-block;
+}
+
+#tabs ul {
+  background-color: grey;
+  margin: 0px;
+  padding: 10px;
+}
+
+.active {
+  background-color: green;
+}
