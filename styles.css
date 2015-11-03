@@ -15,17 +15,12 @@
 }
 
 #tabs ul {
-  background-color: grey;
+  background-color: #D1E0E0;
   margin: 0px;
   padding: 10px;
 }
 
 .active {
-  background-color: green;
+  background-color: #94B8B8;
 }
 
-#map_canvas {
-  margin: auto;
-  border: solid;
-  border-width: 3px;
-}
