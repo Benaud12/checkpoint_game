@@ -3,7 +3,7 @@
 <head>
   <title>THE GAME</title>
 
-
+  <link rel='stylesheet' type ='text/css' href = "reset.css">
   <link rel='stylesheet' type ='text/css' href = "styles.css">
   <link rel="stylesheet" href="jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
 
@@ -15,6 +15,7 @@
 
   <div id = "tabs" ng-controller = "tabCtrl as tabCtrl" >
     <div>
+
       <ul>
         <li ng-class = "{active:tabCtrl.isSelected('map')}">
           <a href ng-click = "tabCtrl.selectTab('map')">Map</a>
@@ -26,10 +27,11 @@
           <a href ng-click = "tabCtrl.selectTab('rules')">Rules</a>
         </li>
       </ul>
+
       <div>
         <div id = "map" ng-show = "tabCtrl.isSelected('map')">
-          <canvas id="map_canvas">
-          </canvas>
+          <canvas id="map_canvas"></canvas>
+          <div id="europe" style="width: 600px; height: 400px"></div>
         </div>
         <div id = "players" ng-show = "tabCtrl.isSelected('players')">
           PLAYERS
@@ -38,6 +40,7 @@
           RULES
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -50,32 +53,8 @@
 <script src = "js/canvas.js"></script>
 <script src="jquery-jvectormap-2.0.3.min.js"></script>
 <script src="jquery-jvectormap-europe-mill.js"></script>
+<script src = "js/map.js"></script>
 
-
-<div id="europe" style="width: 600px; height: 400px">
-<script>
-$(function(){
-  $('#europe').vectorMap({
-    map: 'europe_mill',
-    scaleColors: ['#C8EEFF', '#0071A4'],
-    normalizeFunction: 'polynomial',
-    hoverOpacity: 0.7,
-    hoverColor: false,
-    markerStyle: {
-      initial: {
-        fill: '#F8E23B',
-        stroke: '#383f47'
-      }
-    },
-    backgroundColor: '#383f47',
-    markers: [
-      {latLng: [39.90, 12.45], name: 'Vatican City'},
-      {latLng: [43.73, 7.41], name: 'Monaco'}
-    ]
-  });
-});
-</script>
-</div>
 
 
 </body>

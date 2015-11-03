@@ -1,4 +1,4 @@
-#wrapper {
+ #wrapper {
   width: 100%;
 }
 
@@ -22,4 +22,10 @@
 
 .active {
   background-color: green;
+}
+
+#map_canvas {
+  margin: auto;
+  border: solid;
+  border-width: 3px;
 }
