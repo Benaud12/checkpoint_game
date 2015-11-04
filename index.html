@@ -9,61 +9,48 @@
 
 </head>
 <body>
-<div id = 'wrapper'>
+  <div id = 'wrapper'>
 
-  <div id = "tabs" ng-controller = "tabCtrl as tabCtrl" >
-    <div>
-
-      <ul>
-        <li ng-class = "{active:tabCtrl.isSelected('map')}">
-          <a href ng-click = "tabCtrl.selectTab('map')">Map</a>
-        </li>
-        <li ng-class = "{active:tabCtrl.isSelected('players')}">
-          <a href ng-click = "tabCtrl.selectTab('players')">Players</a>
-        </li>
-        <li ng-class = "{active:tabCtrl.isSelected('rules')}">
-          <a href ng-click = "tabCtrl.selectTab('rules')">Rules</a>
-        </li>
-      </ul>
-
+    <div id = "tabs" ng-controller = "tabCtrl as tabCtrl" >
       <div>
-        <div id = "map" ng-show = "tabCtrl.isSelected('map')" >
-          <button id = "loc1">1</button>
-          <button id = "loc2">2</button>
-          <button id = "loc3">3</button>
-          <button id = "loc4">4</button>
-          <button id = "loc5">5</button>
-<!--           <div id="mapContainer" style="position:relative">
-            <div id="europe" style="width: 600px; height: 400px"></div>
-            <div id="svgMapOverlay" style="position:absolute;top:0px;left:0px"></div>
-          </div> -->
-<!--           <canvas id="map_canvas" width="578" height="200"></canvas> -->
 
-        </div>
-        <div id = "players" ng-show = "tabCtrl.isSelected('players')">
-          PLAYERS
-        </div>
-        <div id = "rules" ng-show = "tabCtrl.isSelected('rules')">
-          RULES
+        <ul>
+          <li ng-class = "{active:tabCtrl.isSelected('map')}">
+            <a href ng-click = "tabCtrl.selectTab('map')">Map</a>
+          </li>
+          <li ng-class = "{active:tabCtrl.isSelected('players')}">
+            <a href ng-click = "tabCtrl.selectTab('players')">Players</a>
+          </li>
+          <li ng-class = "{active:tabCtrl.isSelected('rules')}">
+            <a href ng-click = "tabCtrl.selectTab('rules')">Rules</a>
+          </li>
+        </ul>
+
+        <div>
+          <div id = "map" ng-show = "tabCtrl.isSelected('map')" >
+            <button id = "loc1">1</button>
+            <button id = "loc2">2</button>
+            <button id = "loc3">3</button>
+            <button id = "loc4">4</button>
+            <button id = "loc5">5</button>
+          </div>
+          <div id = "players" ng-show = "tabCtrl.isSelected('players')">
+            PLAYERS
+          </div>
+          <div id = "rules" ng-show = "tabCtrl.isSelected('rules')">
+            RULES
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<script src = "bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-resource/angular-resource.js"></script>
-<script src = "js/app.js"></script>
-<script src = "js/tabController.js"></script>
-<script src = "js/canvas.js"></script>
-<script src="jquery-jvectormap-2.0.3.min.js"></script>
-<script src="jquery-jvectormap-europe-mill.js"></script>
-<script src = "js/map.js"></script>
-<script src = "js/svg.js"></script>
-<script src = "js/svg.path.js"></script>
-
-
+  <script src = "bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src = "js/app.js"></script>
+  <script src = "js/tabController.js"></script>
 
 </body>
+
 </html>
