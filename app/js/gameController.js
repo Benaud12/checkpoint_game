@@ -46,7 +46,7 @@ checkpointApp.controller('GameController', function($scope, $firebaseObject, Dat
     var dataChanges = function(distanceToTarget) {
       console.log("changing colours")
       if (distanceToTarget > 5) {
-        return ({color: '#9BB9E8'})
+        return ({color: '#26C2ED'})
       }
       else if ( distanceToTarget > 3 ) {
         return ({color: '#447BF2'})
@@ -64,7 +64,7 @@ checkpointApp.controller('GameController', function($scope, $firebaseObject, Dat
         return ({color: '#F50733'})
       }
       else {
-        return ({color: '#33F540', located: true})
+        return ({color: '#26ED33', located: true})
       }
     };
 
