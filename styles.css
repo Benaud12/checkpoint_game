@@ -64,6 +64,12 @@ button.checkpoint {
   margin-left: auto;
   border:1px solid #447BF2;
 }
+
+.gameplay-button {
+  width: 80%;
+  border:1px solid #447BF2;
+}
+
 #login_wrapper {
   width: 20%;
   margin: auto;

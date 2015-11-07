@@ -55,7 +55,7 @@
               </div>
             <div>
               <div ng-show="!gameCtrl.nextCheckpoint || gameCtrl.gameComplete">
-                <button ng-click="gameCtrl.startGame()">Start New Game</button>
+                <button class="gameplay-button" ng-click="gameCtrl.startGame()">Start New Game</button>
               </div>
               <div ng-show="gameCtrl.userCheckpoints">
                 <span ng-repeat="checkpoint in gameCtrl.userCheckpoints">
@@ -67,7 +67,7 @@
                 </div>
 
                 <div>
-                  <button ng-hide="gameCtrl.runningCheckIn || gameCtrl.gameComplete" id="check-in" ng-click="gameCtrl.checkIn()">Check In</button>
+                  <button class="gameplay-button" ng-hide="gameCtrl.runningCheckIn || gameCtrl.gameComplete" id="check-in" ng-click="gameCtrl.checkIn()">Check In</button>
 
 
                   <div ng-show="gameCtrl.gameComplete">
