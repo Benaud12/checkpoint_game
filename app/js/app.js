@@ -11,7 +11,7 @@ ref.set({
       color: '#FFFFFF',
       mapPositionTop: 21,
       mapPositionLeft: 17,
-      clue: "Dummy clue 1"
+      clue: "The same number of days Christmas weeks' coding."
       },
   b: {
       id: 'b',
@@ -22,7 +22,7 @@ ref.set({
       color: '#FFFFFF',
       mapPositionTop: 70,
       mapPositionLeft: 33,
-      clue: "Dummy clue 2"
+      clue: "A local transport hub which opened on 6 October 1884."
       },
    c: {
       id: 'c',
@@ -33,7 +33,7 @@ ref.set({
       color: '#FFFFFF',
       mapPositionTop: 50,
       mapPositionLeft: 45,
-      clue: "Dummy clue 3"
+      clue: "Not far to this watering hole which was once called the Princess Alice."
 
       },
     d: {
@@ -45,7 +45,7 @@ ref.set({
       color: '#FFFFFF',
       mapPositionTop: 12,
       mapPositionLeft: 65,
-      clue: "Dummy clue 4"
+      clue: "The only real East End boozer for miles around. And it has a cat!"
       },
     e: {
       id: 'e',
@@ -56,6 +56,6 @@ ref.set({
       color: '#FFFFFF',
       mapPositionTop: 85,
       mapPositionLeft: 80,
-      clue: "Dummy clue 5"
+      clue: "Annie Chapman was drinking here before Jack the Ripper struck..."
       }
   });
