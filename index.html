@@ -68,6 +68,7 @@
 
                 <div>
                   <button ng-hide="gameCtrl.runningCheckIn || gameCtrl.gameComplete" id="check-in" ng-click="gameCtrl.checkIn()">Check In</button>
+                  <div ng-show="gameCtrl.runningCheckIn || gameCtrl.gameComplete" id="check-in" ng-click="gameCtrl.checkIn()">Geolocation in progress, pelase wait...</div>
 
 
                   <div ng-show="gameCtrl.gameComplete">
