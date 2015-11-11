@@ -1,4 +1,4 @@
-checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocationFactory, $scope, $state, $firebaseObject, $ionicPopup){
+checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocationFactory, CurrentGameDataFactory, $scope, $state, $firebaseObject, $ionicPopup){
 
   var ref = DatabaseDataFactory;
   var syncObject = $firebaseObject(ref);
@@ -7,6 +7,13 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
   syncObject.$bindTo($scope, 'data');
 
   if ($scope.authData) {
+
+    CurrentGameDataFactory($scope.authData.uid, function(returnVal) {
+      console.log("game", returnVal.key())
+      gameRef = returnVal;
+      gameSyncObject = $firebaseObject(gameRef);
+      gameSyncObject.$bindTo($scope, 'bindedGame');
+    })
 
     var userLink = 'users/' + $scope.authData.uid
 
