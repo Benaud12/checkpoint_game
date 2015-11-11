@@ -16,7 +16,8 @@
     <div ng-show="nextCheckpoint"> <!-- The user is in a game -->
 
        <div id="container" style = "margin:30px; background-color:{{nextCheckpoint.color}}">
-          <p style = "font-size: 200%; line-height: 150%; margin:10px; color:white">{{nextCheckpoint.clue}}</p>
+          <p ng-show="distanceToTarget" style = "font-size: 200%; line-height: 150%; margin:10px; color:white">{{nextCheckpoint.clue}}</p>
+          <p ng-hide="distanceToTarget" style = "font-size: 200%; line-height: 150%; margin:10px; color:white">Awaiting Geolocation...</p>
       </div>
 
       <div style = "text-align:center; margin:20px">
