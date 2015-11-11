@@ -8,9 +8,8 @@ checkpointApp.factory('CurrentGameDataFactory', function(DatabaseDataFactory, $f
     var userGamesLink = 'users/' + userId + '/games';
     ref.child(userGamesLink).once('value', function(snapshot) {
       snapshot.forEach(function(game) {
-        var currentGame = game.val().currentGame
-        if (currentGame) {
-          return callbackFunction(game.ref());
+        if (game.val().currentGame) {
+          return callbackFunction(game);
         };
       });
     });

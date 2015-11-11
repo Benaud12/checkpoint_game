@@ -2,7 +2,7 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
 
   var ref = DatabaseDataFactory;
   var syncObject = $firebaseObject(ref);
-  var gameRef, currentGameName, nextCheckpoint;
+  var currentGameRef, currentGameName, nextCheckpoint;
   var authData = ref.getAuth();
 
   syncObject.$bindTo($scope, 'data');
@@ -12,16 +12,17 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
     var userLink = 'users/' + authData.uid
 
     CurrentGameDataFactory(authData.uid, function(returnVal) {
-      console.log('return', returnVal.exportVal())
-      if (returnVal.key()) {
-        console.log("game", returnVal.key())
+      console.log('return', returnVal.ref())
+      if (returnVal) {
 
-        var gameRef = returnVal;
+        currentGameRef = returnVal.ref()
+
         currentGameName = returnVal.key();
         nextCheckpoint = findNext(returnVal.val().checkpoints)
-        currentCheckpoints = returnVal.val().checkpoints;
-        var gameSyncObject = $firebaseObject(gameRef);
-        gameSyncObject.$bindTo($scope, 'bindedGame');
+        $scope.gameComplete = isAllLocated(returnVal.val().checkpoints)
+
+        var gameSyncObject = $firebaseObject(currentGameRef);
+        gameSyncObject.$bindTo($scope, 'currentGame');
         console.log('ppp', currentGameName)
 
 
@@ -124,7 +125,7 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
 
 
     $scope.distanceUpdate = function(userLocation) {
-
+      console.log('next cp in update', nextCheckpoint);
 
       var checkpointId = nextCheckpoint.id;
       var link = 'users/' + authData.uid + '/games/' + currentGameName;
@@ -135,20 +136,31 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
 
       var distanceToTarget = GeoFire.distance(userLocation, targetLocation);
       // $scope.humanDistanceToTarget =  ($scope.distanceToTarget * 1000).toFixed(0);
-
-      // userData.once('value', function(snapshot) {
-      //   if ( snapshot.val().distance < $scope.distanceToTarget ) {
-      //     $scope.hotterColder = 'Getting colder...';
-      //   } else {
-      //     $scope.hotterColder = 'Getting warmer...';
-      //   };
-
-      //   userData.update( {distance: $scope.distanceToTarget} );
-
-      // });
-
       checkpointData.update( dataChanges(distanceToTarget) );
+
+      ref.child(link).once('value', function(snapshot) {
+        var checkpoints = snapshot.val().checkpoints
+        if (isAllLocated(checkpoints)) {
+          finishTime = new Date();
+          ref.child(link).update({finished: finishTime});
+          $scope.gameComplete = true;
+        } else {
+          userData.once('value', function(snapshot) {
+            if ( snapshot.val().distance < distanceToTarget ) {
+              $scope.hotterColder = 'Getting colder...';
+            } else {
+              $scope.hotterColder = 'Getting warmer...';
+            };
+            userData.update( {distance: distanceToTarget} );
+
+          });
+
+        };
+
+      });
+
     };
+
 
 
 
@@ -179,9 +191,8 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
     // };
 
     $scope.quitGame = function() {
-      var currentGameLink = userLink + '/games/' + $scope.currentGame;
-      if ($scope.currentGame) {
-        ref.child(currentGameLink).update({
+      if (currentGameRef) {
+        currentGameRef.update({
           currentGame: false
         });
         document.location.reload();
@@ -237,51 +248,54 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
       });
     }
 
-    ref.on('value', function(dataSnapshot){
 
-      if ($scope.currentGame) {
-        var link = userLink + '/games/' + $scope.currentGame;
-        ref.child(link).child('checkpoints').once('value', function(snapshot) {
-          $scope.userCheckpoints = snapshot.val();
-          if (isAllLocated(snapshot.val()) && !$scope.gameComplete) {
-            finishTime = new Date();
-            ref.child(link).update({finished: finishTime})
-            $scope.gameComplete = isAllLocated(snapshot.val())
-          }
-        });
-      };
 
-      ref.child('games').once('value', function(snapshot) {
-        $scope.allGames = snapshot.val();
-      })
 
-      ref.child(userLink).child('games').once('value', function(snapshot) {
-        // $scope.currentGame = null;
-        $scope.nextCheckpoint = null;
-        snapshot.forEach(function(game) {
-          var currentGame = game.val().currentGame
-          if (currentGame) {
-            $scope.currentGame = game.key()
-            $scope.userCheckpoints = game.val().checkpoints
-            $scope.nextCheckpoint = findNext(game.val().checkpoints)
-          };
-        });
-      });
+    // ref.on('value', function(dataSnapshot){
 
-      ref.child('users').once('value', function(snapshot) {
-        gameLink = 'games/' + $scope.currentGame;
-        $scope.allPlayers = {};
-        snapshot.forEach(function(user) {
-          if (user.hasChild(gameLink)) {
-          userId = user.key()
-          $scope.allPlayers[userId] = {
-              checkpoints: user.child(gameLink).val().checkpoints,
-              name: user.child('name').val()
-            }
-          }
-        });
+      // if ($scope.currentGame) {
+      //   var link = userLink + '/games/' + $scope.currentGame;
+      //   ref.child(link).child('checkpoints').once('value', function(snapshot) {
+      //     $scope.userCheckpoints = snapshot.val();
+      //     if (isAllLocated(snapshot.val()) && !$scope.gameComplete) {
+      //       finishTime = new Date();
+      //       ref.child(link).update({finished: finishTime})
+      //       $scope.gameComplete = isAllLocated(snapshot.val())
+      //     }
+      //   });
+      // };
 
-      });
+      // ref.child('games').once('value', function(snapshot) {
+      //   $scope.allGames = snapshot.val();
+      // })
+
+      // ref.child(userLink).child('games').once('value', function(snapshot) {
+      //   // $scope.currentGame = null;
+      //   $scope.nextCheckpoint = null;
+      //   snapshot.forEach(function(game) {
+      //     var currentGame = game.val().currentGame
+      //     if (currentGame) {
+      //       $scope.currentGame = game.key()
+      //       $scope.userCheckpoints = game.val().checkpoints
+      //       $scope.nextCheckpoint = findNext(game.val().checkpoints)
+      //     };
+      //   });
+      // });
+
+      // ref.child('users').once('value', function(snapshot) {
+      //   gameLink = 'games/' + $scope.currentGame;
+      //   $scope.allPlayers = {};
+      //   snapshot.forEach(function(user) {
+      //     if (user.hasChild(gameLink)) {
+      //     userId = user.key()
+      //     $scope.allPlayers[userId] = {
+      //         checkpoints: user.child(gameLink).val().checkpoints,
+      //         name: user.child('name').val()
+      //       }
+      //     }
+      //   });
+
+      // });
 
       // var link = userLink + '/games/' + $scope.currentGame;
       //     ref.child(link).once('value', function(snapshot) {
@@ -315,7 +329,7 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
 
       //   });
 
-    });
+    // });
 
   }
 

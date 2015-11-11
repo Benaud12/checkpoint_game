@@ -17,7 +17,8 @@ checkpointApp.controller('NewGameCtrl', function(DatabaseDataFactory, CurrentGam
       CurrentGameDataFactory(authData.uid, function(returnVal) {
         console.log("called back?")
         if (returnVal) {
-          returnVal.update({
+          var gameRef = returnVal.ref();
+          gameRef.update({
             currentGame: false
           });
         };
