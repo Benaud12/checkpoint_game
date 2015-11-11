@@ -2,129 +2,181 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
 
   var ref = DatabaseDataFactory;
   var syncObject = $firebaseObject(ref);
-  $scope.authData = ref.getAuth();
+  var gameRef, currentGameName, nextCheckpoint;
+  var authData = ref.getAuth();
 
   syncObject.$bindTo($scope, 'data');
 
-  if ($scope.authData) {
+  if (authData) {
 
-    CurrentGameDataFactory($scope.authData.uid, function(returnVal) {
-      console.log("game", returnVal.key())
-      gameRef = returnVal;
-      gameSyncObject = $firebaseObject(gameRef);
-      gameSyncObject.$bindTo($scope, 'bindedGame');
+    var userLink = 'users/' + authData.uid
+
+    CurrentGameDataFactory(authData.uid, function(returnVal) {
+      console.log('return', returnVal.exportVal())
+      if (returnVal.key()) {
+        console.log("game", returnVal.key())
+
+        var gameRef = returnVal;
+        currentGameName = returnVal.key();
+        nextCheckpoint = findNext(returnVal.val().checkpoints)
+        currentCheckpoints = returnVal.val().checkpoints;
+        var gameSyncObject = $firebaseObject(gameRef);
+        gameSyncObject.$bindTo($scope, 'bindedGame');
+        console.log('ppp', currentGameName)
+
+
+        CurrentLocationFactory(function(returnVal) {
+          var currentLocation = returnVal;
+          $scope.distanceUpdate(currentLocation)
+        });
+
+      }
+
     })
 
-    var userLink = 'users/' + $scope.authData.uid
+    console.log('hhh', currentGameName)
 
-    $scope.startGame = function(gameName) {
-      var currentGameLink = userLink + '/games/' + $scope.currentGame;
-      var gameLink = 'games/' + gameName;
-      var startTime = new Date();
+    // var userLink = 'users/' + $scope.authData.uid
 
-      if ($scope.currentGame) {
-        ref.child(currentGameLink).update({
-          currentGame: false
-        });
-      }
+    // $scope.startGame = function(gameName) {
+    //   var currentGameLink = userLink + '/games/' + currentGameName;
+    //   var gameLink = 'games/' + gameName;
+    //   var startTime = new Date();
 
-      ref.child(gameLink).once('value', function(snapshot) {
-        var game = snapshot.val();
-        ref.child(userLink).child(gameLink).update(game);
-        ref.child(userLink).child(gameLink).update({
-          started: startTime,
-          finished: null,
-          currentGame: true
-        });
-        document.location.reload();
-      })
-    };
+    //   if (currentGameName) {
+    //     ref.child(currentGameLink).update({
+    //       currentGame: false
+    //     });
+    //   }
 
-    $scope.startGamePopup = function() {
-      $ionicPopup.show({
-        templateUrl: 'views/tab-game-select.html',
-        title: 'Please select a game',
-        scope: $scope,
-        buttons: [
-          { text: 'Cancel' }
-        ]
-      });
-    }
+    //   ref.child(gameLink).once('value', function(snapshot) {
+    //     var game = snapshot.val();
+    //     ref.child(userLink).child(gameLink).update(game);
+    //     ref.child(userLink).child(gameLink).update({
+    //       started: startTime,
+    //       finished: null,
+    //       currentGame: true
+    //     });
+    //     document.location.reload();
+    //   })
+    // };
 
-//
-
-    var watchID;
-    var geoLoc;
-
-    function checkDistance(position) {
-      var latitude = position.coords.latitude;
-      var longitude = position.coords.longitude;
-      userLocation = [latitude, longitude];
-      if ($scope.nextCheckpoint) {
-        $scope.checkInResultUpdate(userLocation)
-      };
-      $scope.$apply();
-    }
-
-    function errorHandler(err) {
-      if(err.code == 1) {
-         alert("Error: Access is denied!");
-      }
-
-      else if( err.code == 2) {
-         alert("Error: Position is unavailable!");
-      }
-    }
-
-    function getLocationUpdate(){
-      if(navigator.geolocation){
-        geoLoc = navigator.geolocation;
-        watchID = geoLoc.watchPosition(checkDistance, errorHandler);
-      }
-
-      else{
-         alert("Sorry, browser does not support geolocation!");
-      }
-    }
-
-    getLocationUpdate();
+    // $scope.startGamePopup = function() {
+    //   $ionicPopup.show({
+    //     templateUrl: 'views/tab-game-select.html',
+    //     title: 'Please select a game',
+    //     scope: $scope,
+    //     buttons: [
+    //       { text: 'Cancel' }
+    //     ]
+    //   });
+    // }
 
 //
 
-    $scope.checkIn = function() {
-      $scope.runningCheckIn = true;
-      CurrentLocationFactory(function(returnVal){
-        var userLocation = returnVal;
-        $scope.checkInResultUpdate(userLocation)
-        $scope.runningCheckIn = false;
-        $scope.$apply();
-      });
-    };
+    // var watchID;
+    // var geoLoc;
+
+    // function checkDistance(position) {
+    //   var latitude = position.coords.latitude;
+    //   var longitude = position.coords.longitude;
+    //   userLocation = [latitude, longitude];
+    //   if ($scope.nextCheckpoint) {
+    //     $scope.checkInResultUpdate(userLocation)
+    //   };
+    //   $scope.$apply();
+    // }
+
+    // function errorHandler(err) {
+    //   if(err.code == 1) {
+    //      alert("Error: Access is denied!");
+    //   }
+
+    //   else if( err.code == 2) {
+    //      alert("Error: Position is unavailable!");
+    //   }
+    // }
+
+    // function getLocationUpdate(){
+    //   if(navigator.geolocation){
+    //     geoLoc = navigator.geolocation;
+    //     watchID = geoLoc.watchPosition(checkDistance, errorHandler);
+    //   }
+
+    //   else{
+    //      alert("Sorry, browser does not support geolocation!");
+    //   }
+    // }
+
+    // getLocationUpdate();
+
+//
+
+    // $scope.checkIn = function() {
+    //   $scope.runningCheckIn = true;
+    //   CurrentLocationFactory(function(returnVal){
+    //     var userLocation = returnVal;
+    //     $scope.checkInResultUpdate(userLocation)
+    //     $scope.runningCheckIn = false;
+    //     $scope.$apply();
+    //   });
+    // };
 
 
+    $scope.distanceUpdate = function(userLocation) {
 
-    $scope.checkInResultUpdate = function(userLocation) {
-      var checkpointId = $scope.nextCheckpoint.id;
-      var link = userLink + '/games/' + $scope.currentGame;
+
+      var checkpointId = nextCheckpoint.id;
+      var link = 'users/' + authData.uid + '/games/' + currentGameName;
+
       var checkpointData = ref.child(link).child('checkpoints').child(checkpointId);
-      var userData = ref.child(userLink);
-      var targetLocation = [$scope.nextCheckpoint.position.latitude, $scope.nextCheckpoint.position.longitude];
-      $scope.distanceToTarget = GeoFire.distance(userLocation, targetLocation);
-      $scope.humanDistanceToTarget =  ($scope.distanceToTarget * 1000).toFixed(0);
+      var userData = ref.child('users').child(authData.uid);
+      var targetLocation = [nextCheckpoint.position.latitude, nextCheckpoint.position.longitude];
 
-      userData.once('value', function(snapshot) {
-        if ( snapshot.val().distance < $scope.distanceToTarget ) {
-          $scope.hotterColder = 'Getting colder...';
-        } else {
-          $scope.hotterColder = 'Getting warmer...';
-        };
+      var distanceToTarget = GeoFire.distance(userLocation, targetLocation);
+      // $scope.humanDistanceToTarget =  ($scope.distanceToTarget * 1000).toFixed(0);
 
-        userData.update( {distance: $scope.distanceToTarget} );
+      // userData.once('value', function(snapshot) {
+      //   if ( snapshot.val().distance < $scope.distanceToTarget ) {
+      //     $scope.hotterColder = 'Getting colder...';
+      //   } else {
+      //     $scope.hotterColder = 'Getting warmer...';
+      //   };
 
-      });
+      //   userData.update( {distance: $scope.distanceToTarget} );
 
-      checkpointData.update( dataChanges($scope.distanceToTarget) );
+      // });
+
+      checkpointData.update( dataChanges(distanceToTarget) );
     };
+
+
+
+
+
+
+    // $scope.checkInResultUpdate = function(userLocation) {
+    //   var checkpointId = $scope.nextCheckpoint.id;
+    //   var link = userLink + '/games/' + $scope.currentGame;
+    //   var checkpointData = ref.child(link).child('checkpoints').child(checkpointId);
+    //   var userData = ref.child(userLink);
+    //   var targetLocation = [$scope.nextCheckpoint.position.latitude, $scope.nextCheckpoint.position.longitude];
+    //   $scope.distanceToTarget = GeoFire.distance(userLocation, targetLocation);
+    //   $scope.humanDistanceToTarget =  ($scope.distanceToTarget * 1000).toFixed(0);
+
+    //   userData.once('value', function(snapshot) {
+    //     if ( snapshot.val().distance < $scope.distanceToTarget ) {
+    //       $scope.hotterColder = 'Getting colder...';
+    //     } else {
+    //       $scope.hotterColder = 'Getting warmer...';
+    //     };
+
+    //     userData.update( {distance: $scope.distanceToTarget} );
+
+    //   });
+
+    //   checkpointData.update( dataChanges($scope.distanceToTarget) );
+    // };
 
     $scope.quitGame = function() {
       var currentGameLink = userLink + '/games/' + $scope.currentGame;
@@ -231,37 +283,37 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
 
       });
 
-      var link = userLink + '/games/' + $scope.currentGame;
-          ref.child(link).once('value', function(snapshot) {
-          var game = snapshot.val();
-          var startTime = Date.parse(game.started);
-          var timeNow = Date.now();
-          var timeLapsed = (timeNow - startTime);
-          var mydate = new Date(timeLapsed);
-          var humandate = mydate.getUTCHours()+ " hours, " + mydate.getUTCMinutes()+ " minutes and " + mydate.getUTCSeconds()+ " second(s)";
-          var timeVar = document.getElementById('timer'), seconds = mydate.getUTCSeconds(), minutes = mydate.getUTCMinutes(), hours = mydate.getUTCHours(), time;
+      // var link = userLink + '/games/' + $scope.currentGame;
+      //     ref.child(link).once('value', function(snapshot) {
+      //     var game = snapshot.val();
+      //     var startTime = Date.parse(game.started);
+      //     var timeNow = Date.now();
+      //     var timeLapsed = (timeNow - startTime);
+      //     var mydate = new Date(timeLapsed);
+      //     var humandate = mydate.getUTCHours()+ " hours, " + mydate.getUTCMinutes()+ " minutes and " + mydate.getUTCSeconds()+ " second(s)";
+      //     var timeVar = document.getElementById('timer'), seconds = mydate.getUTCSeconds(), minutes = mydate.getUTCMinutes(), hours = mydate.getUTCHours(), time;
 
-          function add() {
-            seconds++;
-            if (seconds >= 60) {
-              seconds = 0;
-              minutes++;
-                if (minutes >= 60) {
-                  minutes = 0;
-                  hours++;
-                }
-          }
-            timeVar.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") +
-            ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") +
-            ":" + (seconds > 9 ? seconds : "0" + seconds);
-            timer();
-          }
-          function timer() {
-            var time = setTimeout(add, (1000 - (Date.now() % 1000)));;
-          }
-          timer();
+      //     function add() {
+      //       seconds++;
+      //       if (seconds >= 60) {
+      //         seconds = 0;
+      //         minutes++;
+      //           if (minutes >= 60) {
+      //             minutes = 0;
+      //             hours++;
+      //           }
+      //     }
+      //       timeVar.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") +
+      //       ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") +
+      //       ":" + (seconds > 9 ? seconds : "0" + seconds);
+      //       timer();
+      //     }
+      //     function timer() {
+      //       var time = setTimeout(add, (1000 - (Date.now() % 1000)));;
+      //     }
+      //     timer();
 
-        });
+      //   });
 
     });
 

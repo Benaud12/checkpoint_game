@@ -4,13 +4,14 @@ checkpointApp.factory('CurrentLocationFactory', function(){
 
     var callbackFunction = callback
 
-    var getLocation = function(){
+    var getLocation = function() {
       if (typeof navigator !== "undefined" && typeof navigator.geolocation !== "undefined") {
-        navigator.geolocation.getCurrentPosition(geolocationCallback, errorHandler);
+        geoLoc = navigator.geolocation;
+        watchID = geoLoc.watchPosition(geolocationCallback, errorHandler);
       } else {
-        alert("Your browser does not support the HTML5 Geolocation API");
-      }
-    }
+         alert("Sorry, it seems your browser does not support geolocation");
+      };
+    };
 
     var geolocationCallback = function(location) {
       var currentLatitude = location.coords.latitude;

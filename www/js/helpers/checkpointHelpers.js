@@ -19,3 +19,12 @@ var updatePlayerCheckpoints = function(playerData, currentGame) {
     key['currentCheckpoints'] = value.game.currentGame.checkpoints;
   });
 };
+
+var findCurrentGame = function(allGames) {
+  var currentGame;
+  angular.forEach(allGames, function(value, key){
+    if (value.currentGame) { currentGame = value };
+  });
+  return currentGame;
+};
+

@@ -1,5 +1,5 @@
-<ion-list>
-  <ion-item ng-repeat="(key, value) in allGames" ng-click="startGame(key)">
+<ion-list ng-controller="NewGameCtrl">
+  <ion-item ng-repeat="(key, value) in data.games" ng-click="startGame(key)">
     {{key}}
   </ion-item>
 </ion-list>
