@@ -1,72 +1,52 @@
-checkpointApp.controller('NextCheckpointCtrl', function(DatabaseDataFactory, UserDataFactory, CurrentLocationFactory, CurrentGameDataFactory, $rootScope, $scope, $state, $firebaseObject, $ionicPopup){
+checkpointApp.controller('NextCheckpointCtrl', function(DatabaseDataFactory, CurrentLocationFactory, CurrentGameDataFactory, $scope, $state, $firebaseObject, $ionicPopup){
 
   var ref = DatabaseDataFactory;
-  var currentGameRef, currentGameName;
   var authData = ref.getAuth();
-  var gameComplete;
-  var syncNextCheckpointObject;
+  var nextCheckpointRef, currentGameName;
 
   if (authData) {
 
     CurrentGameDataFactory(authData.uid, function(returnVal) {
       if (returnVal) {
-
-        currentGameRef = returnVal.ref();
-        currentGameName = returnVal.key();
-        gameComplete = isAllLocated(returnVal.val().checkpoints)
-
-        nextCheckpoint = findNext(returnVal.val().checkpoints)
-        checkpointId = nextCheckpoint.id
-        console.log('keysy', nextCheckpoint)
+        var currentGameRef = returnVal.ref();
+        var currentGameName = returnVal.key();
+        var gameComplete = isAllLocated(returnVal.val().checkpoints)
+        var nextCheckpoint = findNext(returnVal.val().checkpoints)
+        var checkpointId = nextCheckpoint.id
         nextCheckpointRef = currentGameRef.child('checkpoints').child(checkpointId);
-        // $scope.data.currentGame = returnVal.val();
-        // $scope.data.currentGameName = currentGameName
 
         syncNextCheckpointObject = $firebaseObject(nextCheckpointRef);
         syncNextCheckpointObject.$bindTo($scope, 'nextCheckpoint');
-        // var gameSyncObject = $firebaseObject(currentGameRef);
-        // gameSyncObject.$bindTo($scope, 'currentGame');
+
         if (!gameComplete) {
           CurrentLocationFactory(function(returnVal) {
             var currentLocation = returnVal;
-            // $scope.$apply(function(){
-              distanceUpdate(currentLocation)
-            // });
+            distanceUpdate(currentLocation)
           });
         }
       }
 
     });
 
-
     var distanceUpdate = function(userLocation) {
-      var checkpointId = syncNextCheckpointObject.id;
       var link = 'users/' + authData.uid + '/games/' + currentGameName;
-      var checkpointData = ref.child(link).child('checkpoints').child(checkpointId);
       var userData = ref.child('users').child(authData.uid);
       var targetLocation = [syncNextCheckpointObject.position.latitude, syncNextCheckpointObject.position.longitude];
       var distanceToTarget = GeoFire.distance(userLocation, targetLocation);
-      // $scope.humanDistanceToTarget =  ($scope.distanceToTarget * 1000).toFixed(0);
-      checkpointData.update( dataChanges(distanceToTarget) );
+      nextCheckpointRef.update( dataChanges(distanceToTarget) );
 
       ref.child(link).once('value', function(snapshot) {
         var checkpoints = snapshot.val().checkpoints;
         if (isAllLocated(checkpoints)) {
           finishTime = new Date();
           ref.child(link).update({finished: finishTime});
-          gameComplete = true;
         } else {
           userData.once('value', function(snapshot) {
             if ( snapshot.val().distance < distanceToTarget ) {
               $('#hysteresis').text('Getting colder...');
-              // $scope.data.hysteresis = { hotOrCold: 'Getting colder...' };
             } else {
               $('#hysteresis').text('Getting warmer...');
-              // $scope.data.hysteresis = { hotOrCold: 'Getting warmer...' };
             };
-            // var humanDistanceToTarget = (distanceToTarget * 1000).toFixed();
-
-
             userData.update( {distance: distanceToTarget} );
           });
 
@@ -75,15 +55,6 @@ checkpointApp.controller('NextCheckpointCtrl', function(DatabaseDataFactory, Use
       });
 
     };
-
-    // $scope.quitGame = function() {
-    //   if (currentGameRef) {
-    //     currentGameRef.update({
-    //       currentGame: false
-    //     });
-    //     document.location.reload();
-    //   };
-    // };
 
     var dataChanges = function(distanceToTarget) {
       if (distanceToTarget > 3) {
@@ -119,25 +90,6 @@ checkpointApp.controller('NextCheckpointCtrl', function(DatabaseDataFactory, Use
       });
     };
 
-    $scope.bee = function(){
-      return "BEEEE"
-    }
-
-    // $scope.checkpointPopup = function(checkpoint) {
-    //   var checkpointRealName;
-    //   var checkpointName = checkpoint.name;
-    //   if (checkpoint.located) {
-    //     checkpointRealName = checkpoint.realName;
-    //   } else {
-    //     checkpointRealName = "You haven't found me yet!"
-    //   }
-    //   $ionicPopup.show({
-    //     title: checkpointName,
-    //     subTitle: checkpointRealName,
-    //     buttons: [{ text: 'Close' }]
-    //   });
-    // }
-
-  }
+  };
 
 });

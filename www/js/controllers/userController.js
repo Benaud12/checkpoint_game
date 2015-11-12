@@ -2,8 +2,6 @@ checkpointApp.controller("UserCtrl", function(DatabaseDataFactory, UserDataFacto
 
   var ref = DatabaseDataFactory;
   var authData = ref.getAuth();
-  var syncObject = $firebaseObject(ref);
-  // syncObject.$bindTo($scope, 'data')
 
   if (authData){
     UserDataFactory(authData.uid, function(returnVal) {

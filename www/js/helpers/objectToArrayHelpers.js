@@ -14,13 +14,6 @@ var findNext = function(checkpoints) {
   return array.shift();
 };
 
-var updatePlayerCheckpoints = function(playerData, currentGame) {
-  var players;
-  angular.forEach(playerData, function(value, key){
-    player[key] = value.games.currentGame.checkpoints;
-  });
-};
-
 var findCurrentGame = function(allGames) {
   var currentGame;
   angular.forEach(allGames, function(value, key){
@@ -28,12 +21,4 @@ var findCurrentGame = function(allGames) {
   });
   return currentGame;
 };
-
-// var findCurrentGame = function(allGames) {
-//   var currentGame;
-//   angular.forEach(allGames, function(value, key){
-//     if (value.currentGame) { currentGame = value };
-//   });
-//   return currentGame;
-// };
 

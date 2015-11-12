@@ -13,11 +13,6 @@
       </button>
     </div>
 
-    <div>
-      THINGY: {{bee()}}
-      OTHER: {{data.currentGame}}
-    </div>
-
     <div ng-show="nextCheckpoint"> <!-- The user is in a game -->
 
        <div id="container" style = "margin:30px; background-color:{{nextCheckpoint.color}}">
@@ -33,7 +28,7 @@
           <td style="text-align:center">Distance</td>
           <td style="text-align:center">Timer</td>
         </tr>
-        <tr>
+        <tr ng-controller="TimerCtrl">
           <td style="text-align:center; color:{{nextCheckpoint.color}}" ng-show="user.distance>0">{{(user.distance * 1000).toFixed()}} m away</td>
           <td ng-show="user.distance>0" style="text-align:center" id="timer" style="color:{{nextCheckpoint.color}}"></td>
         </tr>

@@ -6,8 +6,6 @@ checkpointApp.controller('NewGameCtrl', function(DatabaseDataFactory, CurrentGam
   var authData = ref.getAuth();
   var startPopUp;
 
-  // syncObject.$bindTo($scope, 'data');
-
   if (authData) {
 
     $scope.startGame = function(gameName) {
