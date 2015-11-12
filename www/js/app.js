@@ -40,7 +40,7 @@ checkpointApp.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'tab-players': {
         templateUrl: 'views/tab-players.html',
-        controller: 'GameCtrl'
+        controller: 'PlayersCtrl'
       }
     }
   })

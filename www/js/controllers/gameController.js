@@ -1,41 +1,39 @@
-checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocationFactory, CurrentGameDataFactory, $scope, $state, $firebaseObject, $ionicPopup){
+checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, UserDataFactory, CurrentLocationFactory, CurrentGameDataFactory, $rootScope, $scope, $state, $firebaseObject, $ionicPopup){
 
   var ref = DatabaseDataFactory;
   var syncObject = $firebaseObject(ref);
-  var currentGameRef, currentGameName, nextCheckpoint;
+  var currentGameRef, currentGameName;
   var authData = ref.getAuth();
+  // $scope.data = {};
+  // syncObject.$bindTo($scope, 'data')
 
-  syncObject.$bindTo($scope, 'data');
-
+  console.log("hello?")
   if (authData) {
 
-    var userLink = 'users/' + authData.uid
-
     CurrentGameDataFactory(authData.uid, function(returnVal) {
-      console.log('return', returnVal.ref())
       if (returnVal) {
+        console.log('return', returnVal.val());
 
-        currentGameRef = returnVal.ref()
-
-        currentGameName = returnVal.key();
-        nextCheckpoint = findNext(returnVal.val().checkpoints)
-        $scope.gameComplete = isAllLocated(returnVal.val().checkpoints)
-
+        currentGameRef = returnVal.ref();
+        // currentGameName = returnVal.key();
+        // $scope.data.nextCheckpoint = findNext(returnVal.val().checkpoints)
+        // $scope.data.gameComplete = isAllLocated(returnVal.val().checkpoints)
+        // $scope.data.currentGame = returnVal.val();
+        // $scope.data.currentGameName = currentGameName
         var gameSyncObject = $firebaseObject(currentGameRef);
         gameSyncObject.$bindTo($scope, 'currentGame');
-        console.log('ppp', currentGameName)
 
-
-        CurrentLocationFactory(function(returnVal) {
-          var currentLocation = returnVal;
-          $scope.distanceUpdate(currentLocation)
-        });
-
+        // if (!$scope.data.gameComplete) {
+        //   CurrentLocationFactory(function(returnVal) {
+        //     var currentLocation = returnVal;
+        //     // $scope.$apply(function(){
+        //       $scope.distanceUpdate(currentLocation)
+        //     // });
+        //   });
+        // }
       }
 
-    })
-
-    console.log('hhh', currentGameName)
+    });
 
     // var userLink = 'users/' + $scope.authData.uid
 
@@ -124,42 +122,43 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
     // };
 
 
-    $scope.distanceUpdate = function(userLocation) {
-      console.log('next cp in update', nextCheckpoint);
+    // $scope.distanceUpdate = function(userLocation) {
+    //   var checkpointId = $scope.data.nextCheckpoint.id;
+    //   var link = 'users/' + authData.uid + '/games/' + currentGameName;
+    //   var checkpointData = ref.child(link).child('checkpoints').child(checkpointId);
+    //   var userData = ref.child('users').child(authData.uid);
+    //   var targetLocation = [$scope.data.nextCheckpoint.position.latitude, $scope.data.nextCheckpoint.position.longitude];
+    //   var distanceToTarget = GeoFire.distance(userLocation, targetLocation);
+    //   // $scope.humanDistanceToTarget =  ($scope.distanceToTarget * 1000).toFixed(0);
+    //   checkpointData.update( dataChanges(distanceToTarget) );
+    //   console.log('location', userLocation)
 
-      var checkpointId = nextCheckpoint.id;
-      var link = 'users/' + authData.uid + '/games/' + currentGameName;
+    //   ref.child(link).once('value', function(snapshot) {
+    //     var checkpoints = snapshot.val().checkpoints;
+    //     if (isAllLocated(checkpoints)) {
+    //       finishTime = new Date();
+    //       ref.child(link).update({finished: finishTime});
+    //       $scope.data.gameComplete = true;
+    //     } else {
+    //       userData.once('value', function(snapshot) {
+    //         if ( snapshot.val().distance < distanceToTarget ) {
+    //           $scope.data.hysteresis = { hotOrCold: 'Getting colder...' };
+    //         } else {
+    //           $scope.data.hysteresis = { hotOrCold: 'Getting warmer...' };
+    //         };
+    //         // var humanDistanceToTarget = (distanceToTarget * 1000).toFixed();
 
-      var checkpointData = ref.child(link).child('checkpoints').child(checkpointId);
-      var userData = ref.child('users').child(authData.uid);
-      var targetLocation = [nextCheckpoint.position.latitude, nextCheckpoint.position.longitude];
 
-      var distanceToTarget = GeoFire.distance(userLocation, targetLocation);
-      // $scope.humanDistanceToTarget =  ($scope.distanceToTarget * 1000).toFixed(0);
-      checkpointData.update( dataChanges(distanceToTarget) );
+    //         userData.update( {distance: distanceToTarget} );
+    //         console.log('distnce', distanceToTarget)
+    //         console.log('finished')
+    //       });
 
-      ref.child(link).once('value', function(snapshot) {
-        var checkpoints = snapshot.val().checkpoints
-        if (isAllLocated(checkpoints)) {
-          finishTime = new Date();
-          ref.child(link).update({finished: finishTime});
-          $scope.gameComplete = true;
-        } else {
-          userData.once('value', function(snapshot) {
-            if ( snapshot.val().distance < distanceToTarget ) {
-              $scope.hotterColder = 'Getting colder...';
-            } else {
-              $scope.hotterColder = 'Getting warmer...';
-            };
-            userData.update( {distance: distanceToTarget} );
+    //     };
 
-          });
+    //   });
 
-        };
-
-      });
-
-    };
+    // };
 
 
 
@@ -199,54 +198,54 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
       };
     };
 
-    var dataChanges = function(distanceToTarget) {
-      if (distanceToTarget > 3) {
-        return ({color: '#447BF2'})
-      }
-      else if ( distanceToTarget > 1.5 ) {
-        return ({color: '#8FB091'})
-      }
-      else if ( distanceToTarget > 0.5 ) {
-        return ({color: '#ECF218'})
-      }
-      else if ( distanceToTarget > 0.2 ) {
-        return ({color: '#FCB50F'})
-      }
-      else if ( distanceToTarget > 0.1 ) {
-        return ({color: '#FA8F17'})
-      }
-      else if ( distanceToTarget > 0.05 ) {
-        return ({color: '#F50733'})
-      }
-      else if ( distanceToTarget <= 0.05) {
-        locatedPopup();
-        return ({color: '#26ED33', located: true})
-      }
-    };
+    // var dataChanges = function(distanceToTarget) {
+    //   if (distanceToTarget > 3) {
+    //     return ({color: '#447BF2'})
+    //   }
+    //   else if ( distanceToTarget > 1.5 ) {
+    //     return ({color: '#8FB091'})
+    //   }
+    //   else if ( distanceToTarget > 0.5 ) {
+    //     return ({color: '#ECF218'})
+    //   }
+    //   else if ( distanceToTarget > 0.2 ) {
+    //     return ({color: '#FCB50F'})
+    //   }
+    //   else if ( distanceToTarget > 0.1 ) {
+    //     return ({color: '#FA8F17'})
+    //   }
+    //   else if ( distanceToTarget > 0.05 ) {
+    //     return ({color: '#F50733'})
+    //   }
+    //   else if ( distanceToTarget <= 0.05) {
+    //     locatedPopup();
+    //     return ({color: '#26ED33', located: true})
+    //   }
+    // };
 
-    var locatedPopup = function() {
-      $ionicPopup.show({
-        template: $scope.nextCheckpoint.realName,
-        title: 'Congratulations!',
-        subTitle: 'You have successfully located...',
-        buttons: [{ text: 'Close' }]
-      });
-    };
+    // var locatedPopup = function() {
+    //   $ionicPopup.show({
+    //     template: $scope.data.nextCheckpoint.realName,
+    //     title: 'Congratulations!',
+    //     subTitle: 'You have successfully located...',
+    //     buttons: [{ text: 'Close' }]
+    //   });
+    // };
 
-    $scope.checkpointPopup = function(checkpoint) {
-      var checkpointRealName;
-      var checkpointName = checkpoint.name;
-      if (checkpoint.located) {
-        checkpointRealName = checkpoint.realName;
-      } else {
-        checkpointRealName = "You haven't found me yet!"
-      }
-      $ionicPopup.show({
-        title: checkpointName,
-        subTitle: checkpointRealName,
-        buttons: [{ text: 'Close' }]
-      });
-    }
+    // $scope.checkpointPopup = function(checkpoint) {
+    //   var checkpointRealName;
+    //   var checkpointName = checkpoint.name;
+    //   if (checkpoint.located) {
+    //     checkpointRealName = checkpoint.realName;
+    //   } else {
+    //     checkpointRealName = "You haven't found me yet!"
+    //   }
+    //   $ionicPopup.show({
+    //     title: checkpointName,
+    //     subTitle: checkpointRealName,
+    //     buttons: [{ text: 'Close' }]
+    //   });
+    // }
 
 
 
@@ -282,20 +281,7 @@ checkpointApp.controller('GameCtrl', function(DatabaseDataFactory, CurrentLocati
       //   });
       // });
 
-      // ref.child('users').once('value', function(snapshot) {
-      //   gameLink = 'games/' + $scope.currentGame;
-      //   $scope.allPlayers = {};
-      //   snapshot.forEach(function(user) {
-      //     if (user.hasChild(gameLink)) {
-      //     userId = user.key()
-      //     $scope.allPlayers[userId] = {
-      //         checkpoints: user.child(gameLink).val().checkpoints,
-      //         name: user.child('name').val()
-      //       }
-      //     }
-      //   });
 
-      // });
 
       // var link = userLink + '/games/' + $scope.currentGame;
       //     ref.child(link).once('value', function(snapshot) {

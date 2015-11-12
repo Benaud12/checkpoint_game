@@ -1,10 +1,10 @@
 <ion-view>
 
-  <ion-content class="padding">
+  <ion-content class="padding" ng-controller="NextCheckpointCtrl">
 
   <div id="container2">
     <div style=" float: left; font-size:small; display:inline">{{currentGame.$id}}</div>
-    <div style=" float: right; font-size:small; display:inline">Logged in as {{username}}</div>
+    <div style=" float: right; font-size:small; display:inline">Logged in as {{user.name}}</div>
   </div>
 
     <div ng-hide="nextCheckpoint" ng-controller="NewGameCtrl">
@@ -13,14 +13,19 @@
       </button>
     </div>
 
+    <div>
+      THINGY: {{bee()}}
+      OTHER: {{data.currentGame}}
+    </div>
+
     <div ng-show="nextCheckpoint"> <!-- The user is in a game -->
 
        <div id="container" style = "margin:30px; background-color:{{nextCheckpoint.color}}">
           <p style = "font-size: 200%; line-height: 150%; margin:10px; color:white">{{nextCheckpoint.clue}}</p>
       </div>
 
-      <div style = "text-align:center; margin:20px">
-        {{hotterColder}}
+      <div id="hysteresis" style = "text-align:center; margin:20px">
+
       </div>
 
       <table style="width:100%; table-layout: fixed;">
@@ -29,15 +34,16 @@
           <td style="text-align:center">Timer</td>
         </tr>
         <tr>
-          <td style="text-align:center; color:{{nextCheckpoint.color}}" ng-show="humanDistanceToTarget">{{humanDistanceToTarget}} m away</td>
-          <td ng-show="humanDistanceToTarget" style="text-align:center" id="timer" style="color:{{nextCheckpoint.color}}"></td>
+          <td style="text-align:center; color:{{nextCheckpoint.color}}" ng-show="user.distance>0">{{(user.distance * 1000).toFixed()}} m away</td>
+          <td ng-show="user.distance>0" style="text-align:center" id="timer" style="color:{{nextCheckpoint.color}}"></td>
         </tr>
       </table>
 
     </div>
 
+    <div ng-controller="CheckpointsCtrl">
     <div style = "margin:20px;">
-      <span ng-repeat="checkpoint in userCheckpoints">
+      <span ng-repeat="checkpoint in checkpoints">
         <button class="checkpoint" id="checkpoint-{{checkpoint.id}}" style="background-color:{{checkpoint.color}};" ng-click="checkpointPopup(checkpoint)">
           {{$index + 1}}
         </button>
@@ -45,10 +51,10 @@
       </span>
     </div>
 
-    <div ng-show="gameComplete"> <!-- The user has finished a game -->
+    <div ng-show="isAllLocated(checkpoints)"> <!-- The user has finished a game -->
       <h5>Congratulations! You've found all the checkpoints!</h5>
     </div>
-
+    </div>
 
 
 

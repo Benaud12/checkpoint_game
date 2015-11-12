@@ -1,14 +1,17 @@
-checkpointApp.controller("UserCtrl", function(DatabaseDataFactory, UserAdminFactory, $scope, $state, $ionicPopup) {
+checkpointApp.controller("UserCtrl", function(DatabaseDataFactory, UserDataFactory, UserAdminFactory, $scope, $state, $ionicPopup, $firebaseObject) {
 
   var ref = DatabaseDataFactory;
+  var authData = ref.getAuth();
+  var syncObject = $firebaseObject(ref);
+  // syncObject.$bindTo($scope, 'data')
 
-  $scope.authData = ref.getAuth();
-
-  if ($scope.authData){
-    var link = 'users/' + $scope.authData.uid + '/name';
-    ref.child(link).once('value', function(snapshot) {
-      $scope.username = snapshot.val();
+  if (authData){
+    UserDataFactory(authData.uid, function(returnVal) {
+      userDataRef = returnVal.ref()
+      userSyncObject = $firebaseObject(userDataRef);
+      userSyncObject.$bindTo($scope, 'user');
     });
+
   }
 
   $scope.signupPopUp = function() {

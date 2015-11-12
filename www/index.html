@@ -22,37 +22,44 @@
     <script src="lib/firebase/firebase.js"></script>
     <script src="lib/angularfire/dist/angularfire.min.js"></script>
     <script src="lib/geofire/dist/geofire.min.js"></script>
+    <script src="lib/jquery-2.1.4.js"></script>
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
     <script src="js/controllers/userController.js"></script>
     <script src="js/controllers/gameController.js"></script>
     <script src="js/controllers/newGameController.js"></script>
+    <script src="js/controllers/checkpointsController.js"></script>
+    <script src="js/controllers/nextCheckpointController.js"></script>
+    <script src="js/controllers/playersController.js"></script>
     <script src="js/services/databaseDataFactory.js"></script>
     <script src="js/services/currentGameDataFactory.js"></script>
     <script src="js/services/userAdminFactory.js"></script>
+    <script src="js/services/userDataFactory.js"></script>
     <script src="js/services/currentLocationFactory.js"></script>
-    <script src="js/helpers/checkpointHelpers.js"></script>
+    <script src="js/helpers/objectToArrayHelpers.js"></script>
 
   </head>
   <body ng-app="CheckpointApp" ng-controller="UserCtrl">
     <ion-pane>
 
     <ion-header-bar align-title="center">
-      <div ng-controller="GameCtrl" class="buttons">
+    <div ng-controller="GameCtrl">
+      <div ng-controller="NextCheckpointCtrl" class="buttons">
         <button class="button" ng-show="nextCheckpoint" ng-click="quitGame()">Quit Game</button>
       </div>
+    </div>
       <h1 class="title">HotHotCold</h1>
       <div class="buttons">
-        <button class="button" ng-show="authData" ng-click="userLogout()">Sign out</button>
+        <button class="button" ng-show="user.name" ng-click="userLogout()">Sign out</button>
       </div>
     </ion-header-bar>
 
-      <div ng-hide="authData">
+      <div ng-hide="user.name">
       <ion-nav-view name="authenticate"></ion-nav-view>
       </div>
 
-      <div ng-show="authData">
+      <div ng-show="user.name">
       <ion-nav-view name="tabs"></ion-nav-view>
       </div>
 

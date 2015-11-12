@@ -2,20 +2,20 @@ checkpointApp.controller('NewGameCtrl', function(DatabaseDataFactory, CurrentGam
 
   var ref = DatabaseDataFactory;
   var syncObject = $firebaseObject(ref);
+  syncObject.$bindTo($scope, 'data')
   var authData = ref.getAuth();
+  var startPopUp;
 
-  syncObject.$bindTo($scope, 'data');
+  // syncObject.$bindTo($scope, 'data');
 
   if (authData) {
 
     $scope.startGame = function(gameName) {
-      console.log("In new game ctrl")
       var userLink = 'users/' + authData.uid
       var gameLink = 'games/' + gameName;
       var startTime = new Date();
 
       CurrentGameDataFactory(authData.uid, function(returnVal) {
-        console.log("called back?")
         if (returnVal) {
           var gameRef = returnVal.ref();
           gameRef.update({
@@ -33,14 +33,14 @@ checkpointApp.controller('NewGameCtrl', function(DatabaseDataFactory, CurrentGam
           finished: null,
           currentGame: true
         });
-        var gameSyncObject = $firebaseObject(newGameRef);
+        startPopUp.close();
         document.location.reload();
-      })
+      });
 
     };
 
     $scope.selectGame = function() {
-      $ionicPopup.show({
+      startPopUp = $ionicPopup.show({
         templateUrl: 'views/tab-game-select.html',
         title: 'Please select a game',
         scope: $scope,
