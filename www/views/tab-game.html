@@ -7,13 +7,13 @@
     <div style=" float: right; font-size:small; display:inline">Logged in as {{user.name}}</div>
   </div>
 
-    <div ng-hide="nextCheckpoint" ng-controller="NewGameCtrl">
+    <div ng-hide="nextCheckpoint && !currentGame.finished" ng-controller="NewGameCtrl">
       <button ng-click="selectGame()" class="button button-block button-balanced">
         Start New Game
       </button>
     </div>
 
-    <div ng-show="nextCheckpoint"> <!-- The user is in a game -->
+    <div ng-show="nextCheckpoint && !currentGame.finished"> <!-- The user is in a game -->
 
        <div id="container" style = "margin:30px; background-color:{{nextCheckpoint.color}}">
           <p style = "font-size: 200%; line-height: 150%; margin:10px; color:white">{{nextCheckpoint.clue}}</p>
@@ -36,8 +36,7 @@
 
     </div>
 
-    <div ng-controller="CheckpointsCtrl">
-    <div style = "margin:20px;">
+    <div style = "margin:20px;" ng-controller="CheckpointsCtrl">
       <span ng-repeat="checkpoint in checkpoints">
         <button class="checkpoint" id="checkpoint-{{checkpoint.id}}" style="background-color:{{checkpoint.color}};" ng-click="checkpointPopup(checkpoint)">
           {{$index + 1}}
@@ -46,12 +45,9 @@
       </span>
     </div>
 
-    <div ng-show="isAllLocated(checkpoints)"> <!-- The user has finished a game -->
+    <div ng-show="currentGame.finished"> <!-- The user has finished a game -->
       <h5>Congratulations! You've found all the checkpoints!</h5>
     </div>
-    </div>
-
-
 
   </ion-content>
 </ion-view>

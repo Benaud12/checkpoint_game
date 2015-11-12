@@ -9,16 +9,15 @@ checkpointApp.controller('NextCheckpointCtrl', function(DatabaseDataFactory, Cur
     CurrentGameDataFactory(authData.uid, function(returnVal) {
       if (returnVal) {
         var currentGameRef = returnVal.ref();
-        var currentGameName = returnVal.key();
+        currentGameName = returnVal.key();
         var gameComplete = isAllLocated(returnVal.val().checkpoints)
-        var nextCheckpoint = findNext(returnVal.val().checkpoints)
-        var checkpointId = nextCheckpoint.id
-        nextCheckpointRef = currentGameRef.child('checkpoints').child(checkpointId);
-
-        syncNextCheckpointObject = $firebaseObject(nextCheckpointRef);
-        syncNextCheckpointObject.$bindTo($scope, 'nextCheckpoint');
 
         if (!gameComplete) {
+          var nextCheckpoint = findNext(returnVal.val().checkpoints)
+          var checkpointId = nextCheckpoint.id
+          nextCheckpointRef = currentGameRef.child('checkpoints').child(checkpointId);
+          syncNextCheckpointObject = $firebaseObject(nextCheckpointRef);
+          syncNextCheckpointObject.$bindTo($scope, 'nextCheckpoint');
           CurrentLocationFactory(function(returnVal) {
             var currentLocation = returnVal;
             distanceUpdate(currentLocation)
@@ -34,7 +33,6 @@ checkpointApp.controller('NextCheckpointCtrl', function(DatabaseDataFactory, Cur
       var targetLocation = [syncNextCheckpointObject.position.latitude, syncNextCheckpointObject.position.longitude];
       var distanceToTarget = GeoFire.distance(userLocation, targetLocation);
       nextCheckpointRef.update( dataChanges(distanceToTarget) );
-
       ref.child(link).once('value', function(snapshot) {
         var checkpoints = snapshot.val().checkpoints;
         if (isAllLocated(checkpoints)) {
