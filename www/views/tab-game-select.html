@@ -1,4 +1,4 @@
-<ion-list>
+<ion-list ng-controller="GameListCtrl">
   <ion-item ng-repeat="(key, value) in data.games" ng-click="startGame(key)">
     {{key}}
   </ion-item>
