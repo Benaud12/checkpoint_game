@@ -16,11 +16,11 @@ A checkpoint is located when a user arrives within 100m of it's given position a
 
 ## Production Team
 
-![Anthony Dell’Anno](https://avatars2.githubusercontent.com/u/9336292?v=3&s=460) [Anthony Dell’Anno](https://github.com/adellanno)
-![Evgenii Leshchenko](https://avatars1.githubusercontent.com/u/13106572?v=3&s=460) [Evgenii Leshchenko](https://github.com/TJQKAs)
-![Michael Roger](https://avatars1.githubusercontent.com/u/12005992?v=3&s=460) [Michael Roger](https://github.com/Benaud12)
-![Yana Proskurina](https://avatars2.githubusercontent.com/u/12256750?v=3&s=460) [Yana Proskurina](https://github.com/Proskurina)
-![Tim Harrison](https://avatars3.githubusercontent.com/u/12405008?v=3&s=460) [Tim Harrison](https://github.com/trwh)
+<img alt="Anthony Dell’Anno" src="https://avatars2.githubusercontent.com/u/9336292?v=3&s=460"> [Anthony Dell’Anno](https://github.com/adellanno)
+<img alt="Evgenii Leshchenko" src="https://avatars1.githubusercontent.com/u/13106572?v=3&s=460"> [Evgenii Leshchenko](https://github.com/TJQKAs)
+<img alt="Michael Roger" src="https://avatars1.githubusercontent.com/u/12005992?v=3&s=460"> [Michael Roger](https://github.com/Benaud12)
+<img alt="Yana Proskurina" src="https://avatars2.githubusercontent.com/u/12256750?v=3&s=460"> [Yana Proskurina](https://github.com/Proskurina)
+<img alt="Tim Harrison" src="https://avatars3.githubusercontent.com/u/12405008?v=3&s=460"> [Tim Harrison](https://github.com/trwh)
 
 
 ## Getting started
