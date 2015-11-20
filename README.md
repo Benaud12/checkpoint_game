@@ -1,4 +1,7 @@
-Hot, Hot, Cold            ![Hot, Hot, Cold logo](www/img/hothotcold.png)
+![Hot, Hot, Cold logo](www/img/hothotcold.png)
+
+
+Hot, Hot, Cold
 =======================
 
 
