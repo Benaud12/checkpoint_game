@@ -18,10 +18,10 @@ A checkpoint is located when a user arrives within 100m of it's given position a
 
 <img alt="Anthony Dell’Anno" src="https://avatars2.githubusercontent.com/u/9336292?v=3&s=50"> [Anthony Dell’Anno](https://github.com/adellanno)
 <br><img alt="Evgenii Leshchenko" src="https://avatars1.githubusercontent.com/u/13106572?v=3&s=50"> [Evgenii Leshchenko](https://github.com/TJQKAs)
-<img alt="Michael Roger" src="https://avatars1.githubusercontent.com/u/12005992?v=3&s=50"> [Michael Roger](https://github.com/Benaud12)
-<img alt="Yana Proskurina" src="https://avatars2.githubusercontent.com/u/12256750?v=3&s=50"> [Yana Proskurina](https://github.com/Proskurina)
-<img alt="Tim Harrison" src="https://avatars3.githubusercontent.com/u/12405008?v=3&s=50"> [Tim Harrison](https://github.com/trwh)
-
+<br><img alt="Michael Roger" src="https://avatars1.githubusercontent.com/u/12005992?v=3&s=50"> [Michael Roger](https://github.com/Benaud12)
+<br><img alt="Yana Proskurina" src="https://avatars2.githubusercontent.com/u/12256750?v=3&s=50"> [Yana Proskurina](https://github.com/Proskurina)
+<br><img alt="Tim Harrison" src="https://avatars3.githubusercontent.com/u/12405008?v=3&s=50"> [Tim Harrison](https://github.com/trwh)
+![Michael Roger](https://avatars1.githubusercontent.com/u/12005992?v=3&s=50) [Michael Roger](https://github.com/Benaud12)
 
 ## Getting started
 
