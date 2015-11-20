@@ -14,6 +14,9 @@ Other players' progress can also be monitored in real-time.
 A checkpoint is located when a user arrives within 100m of it's given position and the winner is the first player to successfully locate each checkpoint.
 
 
+![Hot, Hot, Cold game screenshot iOS & Android](www/img/hothotcoldScreenshot.png)
+
+
 ## Production Team
 
 ![Anthony Dell’Anno](https://avatars2.githubusercontent.com/u/9336292?v=3&s=50) [Anthony Dell’Anno](https://github.com/adellanno)
