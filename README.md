@@ -25,9 +25,9 @@ A checkpoint is located when a user arrives within 100m of it's given position a
 <br>
 ![Michael Roger](https://avatars1.githubusercontent.com/u/12005992?v=3&s=50) [Michael Roger](https://github.com/Benaud12)
 <br>
-![Yana Proskurina](https://avatars2.githubusercontent.com/u/12256750?v=3&s=50) [Yana Proskurina](https://github.com/Proskurina)
-<br>
 ![Tim Harrison](https://avatars3.githubusercontent.com/u/12405008?v=3&s=50) [Tim Harrison](https://github.com/trwh)
+<br>
+![Yana Proskurina](https://avatars2.githubusercontent.com/u/12256750?v=3&s=50) [Yana Proskurina](https://github.com/Proskurina)
 
 
 ## Getting started
